@@ -92,7 +92,7 @@ router.get('/success', async function(req, res, next) {
         <p>We are thrilled to have you on board! Your journey to finding meaningful connections begins here.</p>
         <p>At Tinder Nepal, we believe in creating a welcoming and fun environment for everyone. We hope you enjoy using our platform to meet new people and make lasting connections.</p>
         <p>Get started by exploring your matches, sending messages, and making the most of what Tinder Nepal has to offer.</p>
-        <a href="http://localhost:3000/start" class="button">Get Started</a>
+        <a href="https://tinder-nepal.onrender.com/" class="button">Get Started</a>
         <div class="footer">
             <p>If you have any questions or need assistance, feel free to contact our support team at prathampoudel2@gmail.com</p>
             <p>Happy matching!</p>
