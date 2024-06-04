@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Kajiro';
+            src: url('/fonts/Kajiro.woff2') format('woff2');
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .drawer {
+            width: 0;
+            max-width: 300px;
+            height: 100%;
+            background-color: #000000;
+            color: white;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .drawer.open {
+            width: 30%;
+        }
+
+        .profile {
+            display: flex;
+            /* text-align: center; */
+            /* padding: 20px; */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-name {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .drawer-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .drawer-menu li {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-top: 1px solid #ffffff;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .drawer-menu li:hover {
+            background-color: #34495e;
+        }
+
+        .drawer-menu li i {
+            margin-right: 10px;
+        }
+
+        .close-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .chat-container {
+            flex: 1;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container.open {
+            margin-left: 20%;
+        }
+
+        .header {
+            background-color: #2e3336;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .chat-box {
+            padding: 00px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .drawer-footer {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .drawer-footer li {
+            border-top: 1px solid #34495e;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        .drawer-footer li:hover {
+            background-color: #34495e;
+        }
+
+        .drawer-footer li i {
+            margin-right: 10px;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .drawer.open {
+                width: 70%;
+            }
+
+            .chat-container.open {
+                margin-left: 70%;
+            }
+
+            .drawer-footer {
+                width: 70%;
+            }
+        }
+
+        .navv {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 10vh;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .phonescreen {
+            height: 90vh;
+            width: 60vh;
+            background-color: red;
+        }
+
+        .user-page {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .user-card {
+            width: 100%;
+            /* background-color: rgba(255, 255, 255, 0.9); */
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+        }
+
+       
+
+        .add-friend-button {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: background-color 0.3s;
+        }
+        .add-friend-buttons {
+            padding: 10px 20px;
+            background-color: #40ff00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .add-friend-button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-details {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .user-name {
+            font-family: 'Kajiro';
+            color: white;
+            font-weight: 100;
+            font-size: 20vh;
+            line-height: 197px;
+        }
+
+        .user-age {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .profession {
+            color: #ffffff;
+            font-size: 32px;
+            margin-bottom: 5px;
+            border: solid;
+        }
+
+        .bio {
+            font-family: ui-rounded;
+            font-size: 32px;
+            display: grid;
+            place-items: center;
+            /* columns: auto; */
+            color: #9fff00;
+            text-transform: uppercase;
+        }
+        @media (max-width: 768px) {
+    .matchedcard {
+      flex-direction: column;
+      width: 90vw;
+      padding: 20px;
+    }
+
+    .prff {
+      height: 150px;
+      width: 150px;
+      margin-bottom: 20px;
+    }
+
+    .details .name {
+      font-size: 40px;
+      line-height: 40px;
+    }
+
+    .details .email, .details .bio {
+      font-size: 16px;
+    }
+
+    .buttoned {
+      margin-top: 10px;
+    }
+
+    .unfriend-button {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="drawer" id="drawer">
+            <span class="close-icon" id="close-icon">&times;</span>
+            <div>
+                <div class="profile">
+                    <img src="/images/uploads/<%=user.profilePicture%>" alt="Profile Picture" class="profile-picture">
+                    <div class="profile-name">
+                        <%=user.fullName%>
+                    </div>
+                </div>
+                <ul class="drawer-menu" id="drawer-menu">
+                    <a href="/profile">
+                        <li><i class="fa-solid fa-user"></i>Profile</li>
+                    </a>
+                    <a href="/feed">
+                        <li><i class=" feed fas fa-home"></i>Feed</li>
+                    </a>
+                    <a href="/messages">
+                        <li><i class="fas fa-envelope"></i>Messages</li>
+                    </a>
+                    <a href="/requests">
+                        <li><i class="fas fa-user-friends"></i>Requests</li>
+                    </a>
+                    <a href="/friends">
+                        <li><i class="fas fa-users"></i>Friends</li>
+                    </a>
+                    <a href="/notifications">
+                        <li><i class="fas fa-bell"></i>Notifications</li>
+                    </a>
+                </ul>
+
+
+            </div>
+            <ul class="drawer-footer">
+                <a>
+                    <li><i class="fas fa-cog"></i>Settings</li>
+                </a>
+                <a href="/logout">
+                    <li><i class="fas fa-sign-out-alt"></i>Logout</li>
+                </a>
+
+
+            </ul>
+        </div>
+        <div class="chat-container" id="chat-container">
+            <!-- <div class="header">
+        <span class="menu-icon" id="menu-icon">&#9776;
+
+        </span>
+        <span class="maya">आफ्नो माया पाउनु भयो त?</span>
+      </div> -->
+            <div class="chat-box" id="chat-box" style="background-color:rgb(255, 255, 255);">
+                <!-- Chat content goes here -->
+                <div class="mainmanxe">
+                    <div class="navv">
+                        <div class="name">
+                            <%=user.fullName%>
+                        </div>
+                        <div class="name">
+                            People You Got Matched With!
+                        </div>
+                        <i class="text-[1.4rem] ri-menu-line menu-icon" id="menu-icon"></i>
+
+                    </div>
+                      
+                    <% user.matched.forEach(function(elem) { %>
+                        <div class="matchedcard" style="width: 100vw; background-color: rgb(130, 121, 121); padding: 50px; border-radius: 50px; display: flex; justify-content: space-evenly; align-items: center; margin-bottom: 20px;">
+                          <div class="prff" style="height: 257px; width: 257px; border-radius: 50%; overflow: hidden;">
+                            <img src="/images/uploads/<%= elem.profilePicture %>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+                          </div>
+                          <div class="details" style="flex-grow: 1; margin-left: 20px;">
+                            <div class="name" style="font-family: 'Kajiro'; font-size: 100px; color: #ffffff; line-height: 82px;">
+                              <%= elem.fullName %> <%= elem.age %>
+                            </div>
+                            <div class="email" style="font-size: 20px; color: #ffffff; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                              <%= elem.email %>
+                            </div>
+                            <div class="bio" style="font-size: 20px; color: #514d4d; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                              Bio: <%= elem.bio %>
+                            </div>
+                            <div class="buttoned" style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+                              <button class="anchor unfriend-button" style="background-color: red; border: none; border-radius: 10px; font-size: small; font-family: Arial, sans-serif; color: white; padding: 10px 20px; cursor: pointer; transition: background-color 0.3s, transform 0.3s;"
+                                onmouseover="this.style.backgroundColor='darkred'; this.style.transform='scale(1.05)';"
+                                onmouseout="this.style.backgroundColor='red'; this.style.transform='scale(1)';"
+                                onfocus="this.style.outline='none'; this.style.boxShadow='0 0 5px rgba(255, 0, 0, 0.7)';"
+                                onblur="this.style.boxShadow='none';" data="<%= elem._id %>">
+                                Unfriend
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      <% }); %>
+                    
+                    
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const drawer = document.getElementById('drawer');
+            const chatContainer = document.getElementById('chat-container');
+            const drawerMenuItems = document.querySelectorAll('#drawer-menu li');
+            const drawerFooterItems = document.querySelectorAll('.drawer-footer li');
+
+            menuIcon.addEventListener('click', function () {
+                drawer.classList.toggle('open');
+                chatContainer.classList.toggle('open');
+            });
+
+            closeIcon.addEventListener('click', function () {
+                drawer.classList.remove('open');
+                chatContainer.classList.remove('open');
+            });
+
+            drawerMenuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    drawer.classList.remove('open');
+                    chatContainer.classList.remove('open');
+                });
+            });
+
+            drawerFooterItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    drawer.classList.remove('open');
+                    chatContainer.classList.remove('open');
+                });
+            });
+        });
+
+        document.querySelectorAll('.anchor').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+                e.preventDefault();
+                const value = e.target.getAttribute('data');
+                fetch('/removefriend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: value
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json(); // Parse JSON response
+                        } else {
+                            throw new Error('Failed to send friend request');
+                        }
+                    })
+                    .then(data => {
+                        // Access the full name from the response data
+                       ; // Assuming fullName is a property of the JSON response
+                        alert(`Unfriended ${data.fullName} succesfully`);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+     
+
+    </script>
+</body>
+
+</html>

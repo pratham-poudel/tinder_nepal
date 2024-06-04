@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .otp-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .otp-inputs input {
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        .otp-inputs input:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+        .verify-btn {
+            background: #6a11cb;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .verify-btn:hover {
+            background: #2575fc;
+        }
+        .resend {
+            margin-top: 1rem;
+            color: #6a11cb;
+            cursor: pointer;
+        }
+        .resend:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Email Verification</h2>
+        <p>Please enter the 5-digit code sent to your email:</p>
+        <form id="otpForm" action="/verifyotp" method="POST">
+            <div class="otp-inputs">
+                <input type="text" name="otp1" maxlength="1" oninput="moveToNext(this, event)">
+                <input type="text" name="otp2" maxlength="1" oninput="moveToNext(this, event)">
+                <input type="text" name="otp3" maxlength="1" oninput="moveToNext(this, event)">
+                <input type="text" name="otp4" maxlength="1" oninput="moveToNext(this, event)">
+                <input type="text" name="otp5" maxlength="1" oninput="moveToNext(this, event)">
+            </div>
+            <button type="submit" class="verify-btn">Verify</button>
+        </form>
+        <p class="resend"><a href="/verifyemail">Resend Code </a></p>
+    </div>
+
+    <script>
+        function moveToNext(element, event) {
+            if (event.inputType === "deleteContentBackward") {
+                if (element.previousElementSibling) {
+                    element.previousElementSibling.focus();
+                }
+            } else {
+                if (element.nextElementSibling) {
+                    element.nextElementSibling.focus();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

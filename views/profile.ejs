@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      height: 100%;
+      width: 100%;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .drawer {
+      width: 0;
+      max-width: 300px;
+      height: 100%;
+      background-color: #000000;
+      color: white;
+      transition: width 0.3s ease;
+      overflow: hidden;
+      position: fixed;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .drawer.open {
+      width: 30%;
+    }
+
+    .profile {
+          display: flex;
+    /* text-align: center; */
+    /* padding: 20px; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .profile-picture {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .profile-name {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .drawer-menu {
+      list-style: none;
+      padding: 0;
+    }
+
+    .drawer-menu li {
+      padding: 15px 20px;
+      cursor: pointer;
+      border-top: 1px solid #ffffff;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+    }
+
+    .drawer-menu li:hover {
+      background-color: #34495e;
+    }
+
+    .drawer-menu li i {
+      margin-right: 10px;
+    }
+
+    .close-icon {
+      font-size: 1.5em;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    .chat-container {
+      flex: 1;
+      transition: margin-left 0.3s ease;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-container.open {
+      margin-left: 20%;
+    }
+
+    .header {
+      background-color: #2e3336;
+      color: white;
+      padding: 15px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-icon {
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      padding: 00px;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .drawer-footer {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .drawer-footer li {
+      border-top: 1px solid #34495e;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      cursor: pointer;
+    }
+
+    .drawer-footer li:hover {
+      background-color: #34495e;
+    }
+
+    .drawer-footer li i {
+      margin-right: 10px;
+    }
+
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .drawer.open {
+        width: 70%;
+      }
+
+      .chat-container.open {
+        margin-left: 70%;
+      }
+
+      .drawer-footer {
+        width: 70%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="drawer" id="drawer">
+      <span class="close-icon" id="close-icon">&times;</span>
+      <div>
+        <div class="profile">
+          <img src="/images/uploads/<%=user.profilePicture%>" alt="Profile Picture" class="profile-picture">
+          <div class="profile-name">
+            <%=user.fullName%>
+          </div>
+        </div>
+        <ul class="drawer-menu" id="drawer-menu">
+          <a href="/profile"><li><i class="fa-solid fa-user"></i>Profile</li></a>
+          <a href="/feed"><li><i class=" feed fas fa-home"></i>Feed</li></a>
+          <a href="/messages"><li><i class="fas fa-envelope"></i>Messages</li></a>
+          <a href="/requests"><li><i class="fas fa-user-friends"></i>Requests</li></a>
+          <a href="/friends"><li><i class="fas fa-users"></i>Friends</li></a>
+          <a href="/notifications"><li><i class="fas fa-bell"></i>Notifications</li></a>
+        </ul>
+
+         
+      </div>
+      <ul class="drawer-footer">
+        <a><li><i class="fas fa-cog"></i>Settings</li></a>
+        <a href="/logout"><li><i class="fas fa-sign-out-alt"></i>Logout</li></a>
+        
+        
+      </ul>
+    </div>
+    <div class="chat-container" id="chat-container">
+      <!-- <div class="header">
+        <span class="menu-icon" id="menu-icon">&#9776;
+
+        </span>
+        <span class="maya">आफ्नो माया पाउनु भयो त?</span>
+      </div> -->
+      <div class="chat-box" id="chat-box" style="background-color:black;">
+        <!-- Chat content goes here -->
+        <% include ./partials/header.ejs %>
+          <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
+            <div class="nav flex justify-between items-center px-4">
+              <h3 class="text-lg" ><%=user.username%></h3>
+              <div class="icons flex gap-5" >
+                <i class="text-[1.4rem] ri-menu-line menu-icon" id="menu-icon"></i>
+              </div>
+            </div>
+            <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8">
+              <div class="w-[19vw] h-[19vw] bg-sky-100 rounded-full overflow-hidden">
+                <img src="/images/uploads/<%=user.profilePicture%>" class="w-full h-full object-cover overflow-hidden">
+
+              </div>
+              <div class="stats flex gap-5 items-center justify-between">
+                <div class="flex flex-col items-center justify-center">
+                  <h3>2</h3>
+                  <h4>Posts</h4>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center">
+                  <h3><%=user.matched.length%></h3>
+                  <h4>Matched</h4>
+                </div>
+              </div>
+            </div>
+            <div class="dets px-6 mt-5">
+              <h3 class="text-lg mb-1"><%=user.fullName%></h3>
+              <p class="text-xs tracking-tight opacity-50"><%=user.bio%></p>
+            </div>
+            <div class="px-6 mt-5">
+              <a class="px-3 py-2 bg-blue-800 text-xs rounded-md" href="/edit">Edit Profile</a>
+            </div>
+            <div class="posts w-full flex  gap-1 py-2 mt-5 flex-wrap">
+              <div class="post w-[32.5%] h-32 bg-sky-100">
+                <img src="/images/uploads/<%=user.carouselPicture%>" class="w-full h-full object-cover">
+              </div>
+
+
+            </div>
+          </div>
+        
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuIcon = document.getElementById('menu-icon');
+      const closeIcon = document.getElementById('close-icon');
+      const drawer = document.getElementById('drawer');
+      const chatContainer = document.getElementById('chat-container');
+      const drawerMenuItems = document.querySelectorAll('#drawer-menu li');
+      const drawerFooterItems = document.querySelectorAll('.drawer-footer li');
+
+      menuIcon.addEventListener('click', function () {
+        drawer.classList.toggle('open');
+        chatContainer.classList.toggle('open');
+      });
+
+      closeIcon.addEventListener('click', function () {
+        drawer.classList.remove('open');
+        chatContainer.classList.remove('open');
+      });
+
+      drawerMenuItems.forEach(item => {
+        item.addEventListener('click', function () {
+          drawer.classList.remove('open');
+          chatContainer.classList.remove('open');
+        });
+      });
+
+      drawerFooterItems.forEach(item => {
+        item.addEventListener('click', function () {
+          drawer.classList.remove('open');
+          chatContainer.classList.remove('open');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
