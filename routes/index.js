@@ -281,7 +281,7 @@ router.post('/verifyotp',isLoggedin,async function(req,res){
     const user = await userModel.findOne({email:email});
     user.verified = true;
     await user.save();
-    res.render('edit',{footer: true})
+    res.render('edit',{footer: true,user})
     // res.redirect('/profile');
     }else{
       res.send("Invalid OTP");
@@ -290,7 +290,10 @@ router.post('/verifyotp',isLoggedin,async function(req,res){
 
 })
 router.get('/edit',isLoggedin, function(req,res){
-  res.render('edit',{footer: true});
+  let email = req.user;
+  const user = userModel.findOne({email:email});
+
+  res.render('edit',{footer: true,user});
 })
 const cpUpload = upload.fields([{ name: 'profilePicture', maxCount: 1 }, { name: 'carouselPicture', maxCount: 1 }])
 router.post('/update', cpUpload, isLoggedin, async function (req, res, next) {
