@@ -289,9 +289,9 @@ router.post('/verifyotp',isLoggedin,async function(req,res){
   
 
 })
-router.get('/edit',isLoggedin, function(req,res){
+router.get('/edit',isLoggedin, async function(req,res){
   let email = req.user;
-  const user = userModel.findOne({email:email});
+  const user =await  userModel.findOne({email:email});
 
   res.render('edit',{footer: true,user});
 })
